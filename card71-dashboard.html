@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jack Gentry Membership Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom for payment notice line pseudo-elements */
+    .payment-line {
+      position: relative;
+      flex-grow: 1;
+      height: 1px;
+      background-color: #f1f1f1;
+      margin: 0 10px;
+      min-width: 170px;
+    }
+    .payment-line::before {
+      content: "The antivirus will be added";
+      position: absolute;
+      top: -15px;
+      left: 0;
+      color: #ff9800;
+      font-size: 10px;
+    }
+    .payment-line::after {
+      content: "as soon as the payment is made";
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      color: #cccccc;
+      font-size: 10px;
+    }
+    /* Falling Ribbons */
+    .ribbon {
+      position: absolute;
+      top: -50px;
+      width: 7px;
+      height: 25px;
+      background-color: #ff9800;
+      border-radius: 2px;
+      animation: fall 4s infinite ease-in-out;
+      z-index: 2;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-100vh); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    /* Ribbon variations */
+    .ribbon:nth-child(2) { width: 8px; height: 25px; background-color: #ff5e57; animation-duration: 5s; left: 10%; }
+    .ribbon:nth-child(3) { width: 6px; height: 30px; background-color: #57d9ff; animation-duration: 4s; left: 30%; }
+    .ribbon:nth-child(4) { width: 8px; height: 25px; background-color: #57ffb6; animation-duration: 5.5s; left: 50%; }
+    .ribbon:nth-child(5) { width: 9px; height: 40px; background-color: #ffd457; animation-duration: 6s; left: 70%; }
+    .ribbon:nth-child(6) { width: 5px; height: 25px; background-color: #ff6f91; animation-duration: 4.5s; left: 90%; }
+    .ribbon:nth-child(7) { width: 5px; height: 25px; background-color: #45121e; animation-duration: 4.5s; left: 80%; }
+    .ribbon:nth-child(8) { width: 5px; height: 25px; background-color: #0cca4b; animation-duration: 4s; left: 60%; }
+    .ribbon:nth-child(9) { width: 4px; height: 35px; background-color: #ff007f; animation-duration: 6s; left: 40%; }
+    .ribbon:nth-child(10) { width: 7px; height: 25px; background-color: #007fff; animation-duration: 5s; left: 20%; }
+  </style>
+</head>
+<body class="font-sans bg-gray-900 text-gray-100 m-0 p-0 flex justify-center items-center h-screen overflow-hidden">
+  <!-- Falling Ribbons -->
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+  <div class="ribbon"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="hidden fixed inset-0 bg-black/90 flex justify-center items-center z-40">
+    <span class="text-amber-500 text-2xl">Loading...</span>
+  </div>
+
+  <!-- Dashboard Wrapper -->
+  <div class="max-w-md p-5 rounded-xl bg-gray-800 shadow-xl text-center relative z-10">
+    <!-- Celebrity Profile -->
+    <div class="flex flex-col items-center mb-5">
+      <img src="./assets/celebrity_profile.jpg" alt="Celebrity Image" class="w-24 h-24 rounded-full object-cover border-2 border-gray-100">
+      <h2 class="mt-2 text-amber-500 text-xl">Jack Gentry Membership Card</h2>
+    </div>
+
+    <!-- Welcome Message -->
+    <h1 class="text-amber-500 mb-5 text-lg">Welcome to Your Membership Card Dashboard, Christina!</h1>
+
+    <!-- Membership Card -->
+    <div class="relative p-4 bg-gray-700 rounded-lg mb-5 shadow-md">
+      <img src="./assets/fan_profile1.jpg" alt="Fan Image" class="absolute w-20 h-20 rounded-full border-2 border-amber-500 object-cover top-4 left-4">
+      <h3 class="text-amber-500 text-left ml-28 mb-2">Your Membership Card</h3>
+      <p class="text-gray-300 text-left ml-28 mb-2">Member: Christina</p>
+      <p class="text-gray-300 text-left ml-28 mb-2">christinachin1983@icloud.com</p>
+      <p class="text-gray-300 text-left ml-28 mb-2">273 government st Paterson nj 07501</p>
+      <p class="text-gray-300 text-left ml-28 mb-2">8627745665</p>
+      <p class="text-gray-300 text-left ml-28 mb-2">Membership ID: #71</p>
+      <p class="text-gray-300 text-left ml-28">Status: Active</p>
+    </div>
+
+    <!-- Open Button -->
+    <button class="px-5 py-2 bg-amber-500 text-gray-900 rounded-md cursor-pointer text-base hover:bg-amber-600 transition" onclick="openPopup()">
+      Open
+    </button>
+  </div>
+
+  <!-- Popup Modal -->
+  <div id="popupModal" class="hidden fixed inset-0 bg-black/80 flex justify-center items-center z-50">
+    <div class="bg-gray-800 p-5 rounded-lg max-w-md text-left text-gray-100">
+      <p class="mb-3">Dear Christina,</p>
+      <p class="mb-3">
+        We are pleased to inform you that the funds you’ve paid have been accurately calculated and credited to your membership card wallet using the TikTok Management Industry System. To ensure you receive your membership card successfully via email, our next step will be guiding you through how to transfer funds from your membership card wallet to either your CashApp or bank account.
+      </p>
+      <p class="mb-3">
+        Before proceeding, we need to ensure that the membership card software is free of any viruses to facilitate a smooth transaction. Below are the three available anti-virus options:
+      </p>
+      <ul class="ml-5 mb-3 space-y-2">
+        <li class="text-amber-500"><strong>Anti-virus File ($7,350):</strong> Valid for 3 months.</li>
+        <li class="text-amber-500"><strong>Anti-virus File ($9,380):</strong> Valid for 5 months.</li>
+        <li class="text-amber-500"><strong>Anti-virus File ($11,500):</strong> Permanent solution, with no monthly subscription.</li>
+      </ul>
+
+      <!-- Antivirus Payment Section -->
+      <div class="mt-5 font-bold flex items-center justify-between relative text-xs">
+        <span>Antivirus</span>
+        <div class="payment-line"></div>
+        <span class="text-amber-500 text-lg">⚡</span>
+        <span class="text-amber-500 ml-1 text-sm">Christina Membership card file</span>
+      </div>
+
+      <p class="mt-3">
+        Please inform Jack which anti-virus option you prefer to proceed with. Kindly select the option that best suits your needs. We appreciate your cooperation and understanding. Stay blessed! 😇
+      </p>
+      <button class="mt-3 px-5 py-2 bg-amber-500 text-gray-900 rounded-md cursor-pointer hover:bg-amber-600 transition" onclick="closePopup()">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Open Popup with Loading Delay
+    function openPopup() {
+      // Show loading overlay
+      document.getElementById('loadingOverlay').classList.remove('hidden');
+      // Set timeout to simulate loading, then show the popup
+      setTimeout(() => {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+        document.getElementById('popupModal').classList.remove('hidden');
+      }, 2000); // 2 seconds delay
+    }
+
+    // Close Popup
+    function closePopup() {
+      document.getElementById('popupModal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
